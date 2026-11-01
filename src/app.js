@@ -19,6 +19,14 @@ app.use(cors({
 
 app.use(cookieParser())
 
+app.get('/api/health', (req, res) => {
+    res.json({
+        status: 'ok',
+        uptime: process.uptime(),
+        timestamp: new Date().toISOString()
+    })
+})
+
 const authRoute = require('./routes/auth.route.js')
 const coursesRoute = require('./routes/courses.route.js')
 const enrollmentsRoute = require('./routes/enrollments.route.js')

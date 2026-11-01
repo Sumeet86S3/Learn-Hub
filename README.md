@@ -51,6 +51,18 @@ Learn Hub is a backend API for an online learning platform. It supports student 
 
 All request bodies should be JSON.
 
+### Health check
+
+`GET /health` — returns HTTP `200` with the service status, process uptime, and current timestamp. This liveness check does not require a database connection.
+
+```json
+{
+  "status": "ok",
+  "uptime": 123.45,
+  "timestamp": "2026-11-01T08:37:29.919Z"
+}
+```
+
 ### Register
 
 `POST /api/auth/register`
