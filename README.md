@@ -1,6 +1,6 @@
 # Learn Hub API
 
-A Node.js and Express API for registering and logging in users and adding courses. It uses MongoDB through Mongoose and authenticates protected requests with a JWT stored in a cookie.
+A Node.js and Express API for registering and logging in users and managing courses. It uses MongoDB through Mongoose and authenticates protected requests with a JWT stored in a cookie.
 
 ## Requirements
 
@@ -82,7 +82,32 @@ The response also sets a `token` cookie. Keep and send this cookie with requests
 }
 ```
 
-On success, the response includes a `message` and the created `course`. Missing or invalid authentication returns HTTP `401`; a user without the teacher role also receives HTTP `401`.
+On success, the API returns HTTP `201` with a `message` and the created `course`. Missing or invalid authentication returns HTTP `401`; a user without the teacher role returns HTTP `403`.
+
+### List courses
+
+`GET /api/courses/` — returns all courses in a `courses` array. No authentication is required.
+
+### Get a course
+
+`GET /api/courses/:id` — returns the matching `course`. No authentication is required. An invalid ID returns HTTP `400`; a course that does not exist returns HTTP `404`.
+
+### Update a course
+
+`PUT /api/courses/:id` — requires the `token` cookie and a user with the `teacher` role. Send either or both editable course fields:
+
+```json
+{
+  "courseName": "Updated course name",
+  "description": "Updated course description."
+}
+```
+
+On success, the API returns the updated `course`. Invalid IDs return HTTP `400`, and missing courses return HTTP `404`.
+
+### Delete a course
+
+`DELETE /api/courses/:id` — requires the `token` cookie and a user with the `teacher` role. On success, the API returns a confirmation `message` and the deleted `course`. Invalid IDs return HTTP `400`, and missing courses return HTTP `404`.
 
 ## Project structure
 
