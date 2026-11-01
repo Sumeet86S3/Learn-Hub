@@ -8,7 +8,7 @@ const registerController = async (req,res) =>{
 
     const  checkUser =await userModel.findOne({username})
     if (checkUser){
-        return res.send('user already exist')
+        return res.status(409).json({message: 'user already exist'})
     }
 
     const hashedPassword = await bcrypt.hash(password,10)
@@ -20,7 +20,7 @@ const registerController = async (req,res) =>{
         role:role
     })
 
-    return res.send('user created successfully')
+    return res.status(201).json({message: 'user created successfully'})
 
 }
 
@@ -31,12 +31,12 @@ const loginController = async (req,res) =>{
     const userDetails = await userModel.findOne({username:username})
 
     if(!userDetails){
-        return res.send('invalid Credentials')
+        return res.status(401).json({message: 'invalid Credentials'})
     }
     const checkPassword = await bcrypt.compare(password, userDetails.password)
 
     if(!checkPassword){
-        return res.send('invalid Credentials')
+        return res.status(401).json({message: 'invalid Credentials'})
     }
     const payload = {
         username:username,
@@ -46,10 +46,18 @@ const loginController = async (req,res) =>{
 
     res.cookie('token',token)
     
-    res.send({message:'login successfully' })
+    return res.json({
+        message: 'login successfully',
+        user: {
+            username: userDetails.username,
+            role: userDetails.role
+        }
+    })
 }
-    
 
-module.exports = {registerController,loginController}
+const logoutController = (req, res) => {
+    res.clearCookie('token')
+    return res.json({message: 'logout successfully'})
+}
 
-
+module.exports = {registerController, loginController, logoutController}

@@ -25,11 +25,14 @@ const addCourses = async (req,res) =>{
         return 
     }
 
-    const {courseName,description} = req.body || {}
+    const {title, description, instructor, category, price} = req.body || {}
 
     const addACourse = await courseModel.create({
-        courseName:courseName,
-        description:description
+        title,
+        description,
+        instructor,
+        category,
+        price
     })
 
     return res.status(201).json({
@@ -69,11 +72,10 @@ const updateCourse = async (req, res) => {
     }
 
     const updates = {}
-    if (req.body?.courseName !== undefined) {
-        updates.courseName = req.body.courseName
-    }
-    if (req.body?.description !== undefined) {
-        updates.description = req.body.description
+    for (const field of ['title', 'description', 'instructor', 'category', 'price']) {
+        if (req.body?.[field] !== undefined) {
+            updates[field] = req.body[field]
+        }
     }
 
     if (Object.keys(updates).length === 0) {

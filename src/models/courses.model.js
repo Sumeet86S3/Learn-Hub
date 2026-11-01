@@ -1,13 +1,33 @@
 const mongoose = require('mongoose')
 
 const courseSchema = new mongoose.Schema({
-    courseName:{
+    title:{
         type:String,
         required:true
     },
     description:{
         type:String,
         required:true
+    },
+    instructor:{
+        type:String,
+        required:true
+    },
+    category:{
+        type:String,
+        required:true
+    },
+    price:{
+        type:Number,
+        required:true,
+        validate:{
+            validator: Number.isInteger,
+            message: 'Price must be an integer'
+        }
+    },
+    createdAt:{
+        type:Date,
+        default:Date.now
     }
 })
 
