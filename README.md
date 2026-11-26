@@ -47,6 +47,12 @@ Learn Hub is a backend API for an online learning platform. It supports student 
 
    The frontend runs at `http://localhost:5173` and calls the API at `http://localhost:3000`. To use another API URL, set `VITE_API_URL` in `frontend/.env` (see [frontend/.env.example](./frontend/.env.example)). API calls include credentials so the authentication cookie is sent.
 
+### Seed demo data
+
+Run `npm run seed` from the project root to add one demo teacher, two demo students, and three sample courses. The command is idempotent and does not change existing demo users. Demo accounts use `LearnHubDemo123!` unless `SEED_USER_PASSWORD` is set. This command refuses to run when `NODE_ENV=production`.
+
+Demo usernames: `demo.teacher`, `demo.student`, and `demo.student2`.
+
 ## API
 
 All request bodies should be JSON.
